@@ -1,0 +1,99 @@
+{
+  "id": "cXMy7A6VU3UqpfXy",
+  "name": "My workflow",
+  "description": null,
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-10-20T12:58:39.135Z",
+  "updatedAt": "2026-10-21T16:07:30.948Z",
+  "isArchived": false,
+  "versionId": "c2dca4c0-74fd-4024-81b6-375f5573629e",
+  "versionCounter": 23,
+  "sourceWorkflowId": null,
+  "triggerCount": 0,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "800ab14b-0d29-4f4b-ad94-d96b98f58b74",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "je voudrais automatiser la génération de devis de mon agence de marketing. Que me recommandes tu de plus simple et économiques mais fiable et robuste ? \n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a6753ac5-773d-49bd-b47a-23d03c786c71",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-lite-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        208
+      ],
+      "id": "45bd0b17-c017-421f-baf3-f9b86f004083",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "T4J2HBmlQXghtaBj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [],
+  "activeVersion": null
+}

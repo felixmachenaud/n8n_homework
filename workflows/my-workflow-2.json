@@ -1,0 +1,387 @@
+{
+  "id": "yiYzSvaWWL4ljRey",
+  "name": "My workflow 2",
+  "description": null,
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-10-20T17:38:47.598Z",
+  "updatedAt": "2026-10-21T16:07:30.948Z",
+  "isArchived": false,
+  "versionId": "94c1713c-4853-4554-8887-aba7fad915fd",
+  "versionCounter": 16,
+  "sourceWorkflowId": null,
+  "triggerCount": 0,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ce96ee83-520f-474d-9c79-f57c9e5f01e3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f922d287-56b3-4fc5-89cc-f1a3734cb4a9",
+      "name": "Webhook",
+      "webhookId": "ce96ee83-520f-474d-9c79-f57c9e5f01e3"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\nfor item in _items:\n  item[\"json\"][\"my_new_field\"] = 1\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "81f44345-5248-4879-a3f3-31bc3288b7fe",
+      "name": "Code in Python"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\nfor item in _items:\n  item[\"json\"][\"my_new_field\"] = 1\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "72765d89-6204-4526-96ea-2ac5e432ff55",
+      "name": "Code in Python1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "2cdf5d62-f954-47fa-966a-6fb13d8e55de",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\nfor item in _items:\n  item[\"json\"][\"my_new_field\"] = 1\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "id": "747b0582-ddc2-401a-9127-77d393e4906d",
+      "name": "Code in Python2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "e017d22c-bf03-4da7-8eed-a2d15589a8db",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        208
+      ],
+      "id": "cf6d3414-5577-4c26-a203-61edea8591e7",
+      "placeholder": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "11d0ab44-be9b-4ae7-9aeb-3de808ec2165",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "b123ee08-284b-45c4-9ae4-1c020291b3a0",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1792,
+        -96
+      ],
+      "id": "496815d6-63b9-4b3f-a099-6ad27fe329de",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\nfor item in _items:\n  item[\"json\"][\"my_new_field\"] = 1\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        -96
+      ],
+      "id": "35e07f0b-41d1-4ae7-82f7-633ba11449d5",
+      "name": "Code in Python3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "a156229d-a2f4-4b8b-8488-6807dcf0f4fd",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        2240,
+        -96
+      ],
+      "id": "38a924a6-c678-4897-a958-b306a52f7666",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2464,
+        -156.5
+      ],
+      "id": "8a0f2206-dcc3-458a-8191-97ee90b2966d",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2688,
+        -157.5
+      ],
+      "id": "aabb001f-9f7d-4d25-b6d6-b3ed35266fe6",
+      "name": "HTTP Request4"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python": {
+      "main": [
+        [
+          {
+            "node": "Code in Python1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in Python2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Code in Python3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {},
+  "tags": [],
+  "activeVersion": null
+}

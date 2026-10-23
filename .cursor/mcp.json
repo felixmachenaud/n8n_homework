@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "n8n": {
+      "type": "streamable-http",
+      "url": "https://fmachenaud.app.n8n.cloud/mcp-server/http"
+    }
+  }
+}

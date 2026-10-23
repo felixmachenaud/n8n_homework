@@ -1,0 +1,360 @@
+{
+  "id": "raFawKPSkHb5Amjt",
+  "name": "messaging with status",
+  "description": "Quand le statut (état) change sur l'onglet CRM, Gemini rédige Objet mail et Brouillon mail à partir de la note.",
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-10-22T15:34:58.673Z",
+  "updatedAt": "2026-10-23T13:45:15.500Z",
+  "isArchived": false,
+  "versionId": "c175cb46-439c-490d-9966-f5c9b91cc576",
+  "versionCounter": 7,
+  "sourceWorkflowId": null,
+  "triggerCount": 0,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1m5NSrZH8qbb4ANN_kf6XONWFnPiF8kuvOn-_M1WaBQE",
+          "cachedResultName": "CRM WebSite Studio"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "CRM",
+          "cachedResultName": "CRM"
+        },
+        "event": "rowUpdate",
+        "options": {
+          "columnsToWatch": [
+            "état"
+          ]
+        }
+      },
+      "id": "ff7fd98b-6a9a-4298-b9ce-d8e1d31b15f9",
+      "name": "CRM status changed",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        208
+      ],
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "TlLXtOVXBjmuv0QQ",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "has-mail",
+              "leftValue": "={{ $('CRM status changed').item.json.mail }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              },
+              "rightValue": ""
+            },
+            {
+              "id": "has-note",
+              "leftValue": "={{ $('CRM status changed').item.json.note }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              },
+              "rightValue": ""
+            },
+            {
+              "id": "has-status",
+              "leftValue": "={{ $('CRM status changed').item.json.état }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              },
+              "rightValue": ""
+            },
+            {
+              "id": "not-issue",
+              "leftValue": "={{ $('CRM status changed').item.json.état }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              },
+              "rightValue": "Issue ?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "665e74ab-3a0d-4ac1-8dae-d5803b9c8367",
+      "name": "Eligible prospect?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify({ prospect: $('CRM status changed').item.json['chaud ou dmd de mail'], email: $('CRM status changed').item.json.mail, contactName: $('CRM status changed').item.json['Colonne 3'], phone: $('CRM status changed').item.json['Colonne 2'], status: $('CRM status changed').item.json.état, note: $('CRM status changed').item.json.note }) }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "<instructions>\n  <objectif>\n    Rédige un e-mail de relance CRM pour Félix Machenaud (WebSite Studio), en tenant compte du prospect, de son statut et de la note fournie.\n    Objectif : rester en contact (point de contact), pas vendre sauf si la note le demande explicitement.\n  </objectif>\n\n  <contexte>\n    Appuie-toi uniquement sur les données JSON du message utilisateur (prospect, email, note, statut, etc.).\n    N'invente pas de faits pour combler les manques.\n  </contexte>\n\n  <criteres_de_reussite>\n    Privilégie un mail précis, concret et directement utilisable dans Zimbra.\n    Vouvoiement, ton chaleureux et professionnel, 120–220 mots.\n    Accroche personnalisée à partir de la note (ex. « Je pensais à vous en… », « J'ai repensé à notre échange sur… »).\n    Pas de prix ni d'offre commerciale sauf mention explicite dans la note.\n    Termine par « Bien à vous, » puis une ligne « Félix Machenaud ».\n  </criteres_de_reussite>\n\n  <exemples_et_contraste>\n    Avant de rédiger, compare mentalement 4 à 5 accroches possibles (situations différentes) et choisis la plus fidèle à la note.\n    Ne publie pas cette analyse : elle sert uniquement à choisir le bon ton.\n  </exemples_et_contraste>\n\n  <format>\n    Respecte le format imposé par le parseur structuré : JSON strict avec exactement deux clés « subject » (objet court) et « body » (corps avec sauts de ligne).\n    Aucun autre texte en dehors de ce JSON.\n    Français simple, concis.\n  </format>\n\n  <informations_manquantes>\n    Si une information manquante change fortement le mail, fais une hypothèse prudente et neutre plutôt que d'inventer.\n  </informations_manquantes>\n</instructions>"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "3bc193a4-be45-4401-a560-cb177983b1a2",
+      "name": "Draft CRM email",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        480,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.5
+        }
+      },
+      "id": "d545ca55-1f71-4ffc-9e91-8b3f451739dc",
+      "name": "Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        416
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "T4J2HBmlQXghtaBj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{ \"subject\": \"Suite à notre échange\", \"body\": \"Cher Monsieur,\\n\\nJe pensais à vous...\\n\\nBien à vous,\\nFélix Machenaud\" }",
+        "autoFix": true,
+        "customizeRetryPrompt": true,
+        "prompt": "<instructions>\n  <objectif>Corriger la sortie pour qu'elle respecte le schéma JSON attendu (subject + body).</objectif>\n  <contexte>Utilise {instructions}, {completion} et {error} pour comprendre l'échec de parsing.</contexte>\n  <criteres_de_reussite>JSON valide uniquement, clés subject et body, texte en français vouvoiement.</criteres_de_reussite>\n  <format>Pas de markdown ni de texte hors JSON.</format>\n</instructions>"
+      },
+      "id": "11d74630-6dba-4e42-b9ba-96f2b54dc825",
+      "name": "Email output parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.2
+        }
+      },
+      "id": "f40a8a72-eddf-418a-85a4-99bd36e4f50b",
+      "name": "Gemini Fix Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        656,
+        640
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "T4J2HBmlQXghtaBj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1m5NSrZH8qbb4ANN_kf6XONWFnPiF8kuvOn-_M1WaBQE",
+          "cachedResultName": "CRM WebSite Studio"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "CRM",
+          "cachedResultName": "CRM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "mail"
+          ],
+          "value": {
+            "mail": "={{ $('CRM status changed').item.json.mail }}",
+            "Objet mail": "={{ $('Draft CRM email').item.json.output.subject }}",
+            "Brouillon mail": "={{ $('Draft CRM email').item.json.output.body }}"
+          },
+          "schema": [
+            {
+              "id": "mail",
+              "displayName": "mail",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Objet mail",
+              "displayName": "Objet mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Brouillon mail",
+              "displayName": "Brouillon mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "156e4be7-48b2-4214-bd10-f5872a13eb0c",
+      "name": "Write draft to sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        208
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XUxdKdd9GEYxpgC3",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "CRM status changed": {
+      "main": [
+        [
+          {
+            "node": "Eligible prospect?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eligible prospect?": {
+      "main": [
+        [
+          {
+            "node": "Draft CRM email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft CRM email": {
+      "main": [
+        [
+          {
+            "node": "Write draft to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Draft CRM email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email output parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Draft CRM email",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Fix Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email output parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [],
+  "activeVersion": null
+}
